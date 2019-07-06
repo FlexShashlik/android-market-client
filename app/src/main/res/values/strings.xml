@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Market</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_catalog">Каталог</string>
+    <string name="title_shopping_list">Корзина</string>
+    <string name="title_profile">Профиль</string>
+
+    <string name="greetings">Добро Пожаловать!</string>
+    <string name="greetings_additional">Для продолжения выполните вход в свой аккаунт.</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="login">Войти</string>
+    <string name="error_invalid_email">Неверный формат</string>
+    <string name="error_invalid_password">Минимум 6 символов, одна прописная буква, одна строчная буква и одна цифра</string>
+    <string name="error_field_required">Обязательное поле</string>
+
+</resources>
