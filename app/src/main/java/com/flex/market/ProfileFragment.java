@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +38,40 @@ public class ProfileFragment extends Fragment {
         tilPassword = view.findViewById(R.id.text_input_layout_password);
 
         etEmail = view.findViewById(R.id.editText_email);
+        etEmail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isEmailValid(s.toString())) {
+                    tilEmail.setErrorEnabled(false);
+                } else {
+                    tilEmail.setError(getString(R.string.error_invalid_email));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
         etPassword = view.findViewById(R.id.editText_password);
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (isEmailValid(s.toString())) {
+                    tilPassword.setErrorEnabled(false);
+                } else {
+                    tilPassword.setError(getString(R.string.error_invalid_password));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
         progressBar = view.findViewById(R.id.login_progress);
 
@@ -44,6 +79,9 @@ public class ProfileFragment extends Fragment {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tilEmail.setErrorEnabled(false);
+                tilPassword.setErrorEnabled(false);
+
                 // Store values at the time of the login attempt.
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
@@ -86,10 +124,10 @@ public class ProfileFragment extends Fragment {
     }
 
     public static void showProgress(final boolean show) {
-        int shortAnimTime = 500;
+        int animTime = 400;
 
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        progressBar.animate().setDuration(shortAnimTime).alpha(
+        progressBar.animate().setDuration(animTime).alpha(
                 show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

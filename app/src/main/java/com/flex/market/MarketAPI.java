@@ -22,7 +22,7 @@ class MarketAPI {
     static void GetToken(final Context context, String email, String password){
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL ="http://192.168.1.164:8080/api/v1/auth/login/";
+        String URL ="http://192.168.43.187:8080/api/v1/auth/login/";
 
         try {
             JSONObject jsonBody = new JSONObject();
@@ -35,6 +35,7 @@ class MarketAPI {
                 public void onResponse(JSONObject response) {
                     try {
                         ProfileFragment.showProgress(false);
+                        response.getString("token");
                         Toast.makeText(context, response.getString("token"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
                         e.printStackTrace();
