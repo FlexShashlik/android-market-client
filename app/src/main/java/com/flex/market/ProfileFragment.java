@@ -1,7 +1,5 @@
 package com.flex.market;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,13 +17,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.util.regex.Pattern;
-
 public class ProfileFragment extends Fragment {
     private TextInputLayout tilEmail, tilPassword;
     private EditText etEmail, etPassword;
-    private TextView tvSignUp;
-    private static ProgressBar progressBar;
+    public static ProgressBar progressBar;
 
     @Nullable
     @Override
@@ -47,7 +42,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isEmailValid(s.toString())) {
+                if (Helper.isEmailValid(s.toString())) {
                     tilEmail.setErrorEnabled(false);
                 } else {
                     tilEmail.setError(getString(R.string.error_invalid_email));
@@ -65,7 +60,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (isEmailValid(s.toString())) {
+                if (Helper.isEmailValid(s.toString())) {
                     tilPassword.setErrorEnabled(false);
                 } else {
                     tilPassword.setError(getString(R.string.error_invalid_password));
@@ -97,7 +92,7 @@ public class ProfileFragment extends Fragment {
                     tilPassword.setError(getString(R.string.error_field_required));
                     focusView = tilPassword;
                     cancel = true;
-                } else if (!isPasswordValid(password)){
+                } else if (!Helper.isPasswordValid(password)){
                     tilPassword.setError(getString(R.string.error_invalid_password));
                     focusView = tilPassword;
                     cancel = true;
@@ -108,7 +103,7 @@ public class ProfileFragment extends Fragment {
                     tilEmail.setError(getString(R.string.error_field_required));
                     focusView = tilEmail;
                     cancel = true;
-                } else if (!isEmailValid(email)) {
+                } else if (!Helper.isEmailValid(email)) {
                     tilEmail.setError(getString(R.string.error_invalid_email));
                     focusView = tilEmail;
                     cancel = true;
@@ -119,13 +114,13 @@ public class ProfileFragment extends Fragment {
                     // form field with an error.
                     focusView.requestFocus();
                 } else {
-                    showProgress(true);
+                    Helper.showProgress(true, progressBar);
                     MarketAPI.GetToken(getContext(), email, password);
                 }
             }
         });
 
-        tvSignUp = view.findViewById(R.id.textViewSignUp);
+        TextView tvSignUp = view.findViewById(R.id.textViewSignUp);
         tvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,34 +128,5 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-    }
-
-    public static void showProgress(final boolean show) {
-        int animTime = 400;
-
-        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-        progressBar.animate().setDuration(animTime).alpha(
-                show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            }
-        });
-    }
-
-    private boolean isEmailValid(String email) {
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-
-        Pattern pat = Pattern.compile(emailRegex);
-
-        return pat.matcher(email).matches();
-    }
-
-    private boolean isPasswordValid(String password) {
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
-
-        Pattern pat = Pattern.compile(passwordRegex);
-
-        return pat.matcher(password).matches();
     }
 }

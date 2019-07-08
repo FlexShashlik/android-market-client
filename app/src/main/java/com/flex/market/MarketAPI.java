@@ -34,7 +34,7 @@ class MarketAPI {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        ProfileFragment.showProgress(false);
+                        Helper.showProgress(false, ProfileFragment.progressBar);
                         response.getString("token");
                         Toast.makeText(context, response.getString("token"), Toast.LENGTH_LONG).show();
                     } catch (JSONException e) {
@@ -44,7 +44,7 @@ class MarketAPI {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    ProfileFragment.showProgress(false);
+                    Helper.showProgress(false, ProfileFragment.progressBar);
                     Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     error.printStackTrace();
                 }
