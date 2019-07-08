@@ -13,5 +13,7 @@
     <string name="error_invalid_email">Неверный формат</string>
     <string name="error_invalid_password">Минимум 6 символов, одна прописная буква, одна строчная буква и одна цифра</string>
     <string name="error_field_required">Обязательное поле</string>
+    <string name="sign_up">Зарегистрироваться</string>
+    <string name="sign_up_label">Регистрация</string>
 
 </resources>

@@ -15,7 +15,7 @@
         android:layout_marginBottom="5dp"
         android:text="@string/greetings"
         android:textColor="@color/colorPrimary"
-        android:textSize="25sp" />
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -81,12 +81,13 @@
         app:backgroundTint="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Здесь должно быть предложение зарегистрироваться :3"
-        android:textSize="14sp" />
+        android:text="@string/sign_up"
+        android:textSize="20sp"
+        android:textColor="@color/colorPrimary"/>
 
     <ProgressBar
         android:id="@+id/login_progress"
