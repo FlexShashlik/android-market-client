@@ -18,7 +18,7 @@ import android.widget.TextView;
 public class SignUpActivity extends AppCompatActivity {
     private TextInputLayout tilFirstName, tilLastName, tilEmail, tilPassword;
     private EditText etFirstName, etLastName, etEmail, etPassword;
-    private static ProgressBar progressBar;
+    static ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class SignUpActivity extends AppCompatActivity {
                     focusView.requestFocus();
                 } else {
                     Helper.showProgress(true, progressBar);
-                    //MarketAPI.GetToken(this, email, password);
+                    MarketAPI.SignUp(getBaseContext(), firstName, lastName, email, password);
                 }
             }
         });
