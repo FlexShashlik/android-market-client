@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (Helper.isEmailValid(s.toString())) {
+                if (Helper.isPasswordValid(s.toString())) {
                     tilPassword.setErrorEnabled(false);
                 } else {
                     tilPassword.setError(getString(R.string.error_invalid_password));

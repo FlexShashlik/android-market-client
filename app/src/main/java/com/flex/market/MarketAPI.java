@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 class MarketAPI {
-    //public void getResponse(int method, String url, JSONObject jsonValue, final VolleyCallback callback) {
     static void GetToken(final Context context, String email, String password){
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);

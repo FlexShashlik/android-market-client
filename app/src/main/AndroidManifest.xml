@@ -22,7 +22,7 @@
             android:name=".SignUpActivity"
             android:theme="@style/MyCustomTheme"
             android:label="@string/sign_up_label"
-            />
+            android:screenOrientation="portrait"/>
         
         <activity
             android:name=".MainActivity"
