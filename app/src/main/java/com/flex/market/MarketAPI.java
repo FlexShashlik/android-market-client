@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 class MarketAPI {
+    static String token;
+
     static void GetToken(final Context context, String email, String password){
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -33,8 +35,12 @@ class MarketAPI {
                 @Override
                 public void onResponse(JSONObject response) {
                     try {
-                        Helper.showProgress(false, ProfileFragment.progressBar);
-                        Toast.makeText(context, response.getString("token"), Toast.LENGTH_LONG).show();
+                        Helper.showProgress(false, LoginFragment.progressBar);
+                        token = response.getString("token");
+                        Singleton.getInstance().getTransaction().replace(
+                                R.id.fragment_container,
+                                new ProfileFragment()
+                        ).commit();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -42,7 +48,7 @@ class MarketAPI {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Helper.showProgress(false, ProfileFragment.progressBar);
+                    Helper.showProgress(false, LoginFragment.progressBar);
                     Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     error.printStackTrace();
                 }

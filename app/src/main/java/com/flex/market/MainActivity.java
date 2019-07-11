@@ -1,16 +1,18 @@
 package com.flex.market;
 
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewTreeObserver;
 
 public class MainActivity extends AppCompatActivity {
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentTransaction transaction = fragmentManager.beginTransaction();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +21,15 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.exit, R.anim.enter);
+
+        Singleton.getInstance().setTransaction(transaction);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new CatalogFragment()).commit();
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.fragment_container,
+                    new CatalogFragment()
+            ).commit();
         }
     }
 
@@ -40,14 +48,20 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new ShoppingListFragment();
                     break;
                 case R.id.navigation_profile:
-                    selectedFragment = new ProfileFragment();
+                    if (MarketAPI.token != null) {
+                        selectedFragment = new ProfileFragment();
+                    } else {
+                        selectedFragment = new LoginFragment();
+                    }
                     break;
             }
 
             if(selectedFragment != null)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        selectedFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(
+                        R.id.fragment_container,
+                        selectedFragment
+                ).commit();
             }
 
             return true;
