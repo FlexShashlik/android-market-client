@@ -13,11 +13,11 @@ final class Helper {
 
         Pattern pat = Pattern.compile(emailRegex);
 
-        return pat.matcher(email).matches();
+        return pat.matcher(email.toLowerCase()).matches();
     }
 
     static boolean isPasswordValid(String password) {
-        String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{6,}$";
+        String passwordRegex = "^(?=.*[0-9])(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[а-я])(?=.*[А-Я])))(?=\\S+$).{6,}$";
 
         Pattern pat = Pattern.compile(passwordRegex);
 

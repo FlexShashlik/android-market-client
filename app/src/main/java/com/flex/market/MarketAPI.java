@@ -1,6 +1,7 @@
 package com.flex.market;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -92,6 +93,9 @@ class MarketAPI {
                     try {
                         Helper.showProgress(false, SignUpActivity.progressBar);
                         Toast.makeText(context, "UserID: " + response.getString("userID"), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(context, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(intent);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
