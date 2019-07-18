@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listCategories;
     private HashMap<String, List<String>> listHashMap;
     static int selectedItemId = -1;
+    static List<Catalog> catalog = new ArrayList<>();
+    static List<SubCatalog> subCatalog = new ArrayList<>();
 
     ExpandableListAdapter(Context context, List<String> listCategories, HashMap<String, List<String>> listHashMap) {
         this.context = context;

@@ -9,22 +9,112 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class MarketAPI {
     static String token;
+    private static String api_server = "http://192.168.1.162/api/v1/";
+    static List<String> listCategories;
+    static HashMap<String, List<String>> listHashMap;
 
-    static void GetToken(final Context context, String email, String password){
+// TODO: Helper class or method for requests
+
+    static void GetCatalog(final Context context) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL ="http://192.168.43.187:8080/api/v1/auth/login/";
+        String URL = api_server + "catalog/";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for(int i = 0; i < response.length(); i++){
+                        final JSONObject catalog = response.getJSONObject(i);
+                        ExpandableListAdapter.catalog.add(new Catalog() {
+                            {
+                                ID = catalog.getInt("id");
+                                Name = catalog.getString("name");
+                            }
+                        });
+                    }
+
+                    Toast.makeText(context, ExpandableListAdapter.catalog.get(0).Name, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
+    static void GetSubCatalog(final Context context) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = api_server + "sub_catalog/";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for(int i = 0; i < response.length(); i++){
+                        final JSONObject catalog = response.getJSONObject(i);
+                        ExpandableListAdapter.subCatalog.add(new SubCatalog() {
+                            {
+                                ID = catalog.getInt("id");
+                                Name = catalog.getString("name");
+                                CatalogID = catalog.getInt("catalog_id");
+                            }
+                        });
+                    }
+
+
+                    Toast.makeText(context, ExpandableListAdapter.subCatalog.get(1).Name, Toast.LENGTH_LONG).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
+    static void GetToken(final Context context, String email, String password) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = api_server + "auth/login/";
 
         try {
             JSONObject jsonBody = new JSONObject();
@@ -56,7 +146,7 @@ class MarketAPI {
             }){
                 // set headers
                 @Override
-                public Map <String, String> getHeaders(){
+                public Map <String, String> getHeaders() {
                     Map<String, String> params = new HashMap<>();
                     //params.put("Authorization: Bearer", TOKEN);
                     return params;
@@ -74,10 +164,10 @@ class MarketAPI {
         }
     }
 
-    static void SignUp(final Context context, String firstName, String lastName, String email, String password){
+    static void SignUp(final Context context, String firstName, String lastName, String email, String password) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL ="http://192.168.43.187:8080/api/v1/sign_up/";
+        String URL = api_server + "sign_up/";
 
         try {
             JSONObject jsonBody = new JSONObject();

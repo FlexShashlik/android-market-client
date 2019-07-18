@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ public class CatalogFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.catalog_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_catalog, container, false);
     }
 
     @Override
@@ -32,6 +33,9 @@ public class CatalogFragment extends Fragment {
         listView.setGroupIndicator(null);
 
         // Fetch data here
+        MarketAPI.GetCatalog(getContext());
+        MarketAPI.GetSubCatalog(getContext());
+
         listCategories = new ArrayList<>();
         listHashMap = new HashMap<>();
 
@@ -59,6 +63,7 @@ public class CatalogFragment extends Fragment {
                 return false;
             }
         });
+
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             int lastExpandedPosition = -1;
 
@@ -68,6 +73,14 @@ public class CatalogFragment extends Fragment {
                     listView.collapseGroup(lastExpandedPosition);
                 }
                 lastExpandedPosition = groupPosition;
+            }
+        });
+
+        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+
+                return false;
             }
         });
     }
