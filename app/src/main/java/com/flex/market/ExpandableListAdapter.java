@@ -16,6 +16,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> listCategories;
     private HashMap<String, List<String>> listHashMap;
     static int selectedItemId = -1;
+    static int lastExpandedPosition = -1;
     static List<Catalog> catalog = new ArrayList<>();
     static List<SubCatalog> subCatalog = new ArrayList<>();
 

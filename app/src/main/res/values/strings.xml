@@ -21,4 +21,7 @@
     <!-- Profile fragment -->
     <string name="hello_blank_fragment">Profile fragment</string>
 
+    <!-- Products fragment -->
+    <string name="fragment_products">Список Товаров</string>
+
 </resources>

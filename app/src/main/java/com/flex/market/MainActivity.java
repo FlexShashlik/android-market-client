@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        transaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.exit, R.anim.enter);
+        transaction.setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left);
 
-        Singleton.getInstance().setTransaction(transaction);
+        Singleton.getInstance().setManager(fragmentManager);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(

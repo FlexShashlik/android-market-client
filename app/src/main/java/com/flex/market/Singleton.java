@@ -1,20 +1,20 @@
 package com.flex.market;
 
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 
 class Singleton {
     private static final Singleton ourInstance = new Singleton();
-    private static FragmentTransaction transaction;
+    private static FragmentManager manager;
 
     static Singleton getInstance() {
         return ourInstance;
     }
 
-    FragmentTransaction getTransaction() {
-        return transaction;
+    FragmentManager getManager() {
+        return manager;
     }
 
-    void setTransaction(FragmentTransaction var) {
-        transaction = var;
+    void setManager(FragmentManager var) {
+        manager = var;
     }
 }

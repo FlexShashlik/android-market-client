@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:orientation="horizontal"
-    android:background="?selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+    android:background="?selectableItemBackground">
 
     <TextView
         android:id="@+id/listItem"

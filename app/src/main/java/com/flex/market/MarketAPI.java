@@ -89,7 +89,6 @@ class MarketAPI {
                         });
                     }
 
-
                     Toast.makeText(context, ExpandableListAdapter.subCatalog.get(1).Name, Toast.LENGTH_LONG).show();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -128,10 +127,14 @@ class MarketAPI {
                     try {
                         Helper.showProgress(false, LoginFragment.progressBar);
                         token = response.getString("token");
-                        Singleton.getInstance().getTransaction().replace(
-                                R.id.fragment_container,
-                                new ProfileFragment()
-                        ).commit();
+                        Singleton.getInstance()
+                                .getManager()
+                                .beginTransaction()
+                                .setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left)
+                                .replace(
+                                    R.id.fragment_container,
+                                    new ProfileFragment()
+                                ).commit();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

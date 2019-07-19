@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,8 +16,9 @@ import java.util.List;
 public class CatalogFragment extends Fragment {
     private ExpandableListView listView;
     private ExpandableListAdapter listAdapter;
-    private List<String> listCategories;
+    private List<String> listCatalog;
     private HashMap<String, List<String>> listHashMap;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -36,15 +36,15 @@ public class CatalogFragment extends Fragment {
         MarketAPI.GetCatalog(getContext());
         MarketAPI.GetSubCatalog(getContext());
 
-        listCategories = new ArrayList<>();
+        listCatalog = new ArrayList<>();
         listHashMap = new HashMap<>();
 
-        listCategories.add("Кровельные элементы");
-        listCategories.add("Доборные элементы");
+        listCatalog.add("Кровельные элементы");
+        listCatalog.add("Доборные элементы");
         listHashMap.put("Кровельные элементы", new ArrayList<String>(){{add("Крыша 1"); add("Крыша 2");}});
         listHashMap.put("Доборные элементы", new ArrayList<String>(){{add("Кирпич 1"); add("Кирпичик 2"); add("Камень 1");}});
 
-        listAdapter = new ExpandableListAdapter(getContext(), listCategories, listHashMap);
+        listAdapter = new ExpandableListAdapter(getContext(), listCatalog, listHashMap);
         listView.setAdapter(listAdapter);
 
         listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
@@ -65,20 +65,32 @@ public class CatalogFragment extends Fragment {
         });
 
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-            int lastExpandedPosition = -1;
-
             @Override
             public void onGroupExpand(int groupPosition) {
-                if (groupPosition != lastExpandedPosition) {
-                    listView.collapseGroup(lastExpandedPosition);
+                if (groupPosition != ExpandableListAdapter.lastExpandedPosition) {
+                    listView.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
                 }
-                lastExpandedPosition = groupPosition;
+                ExpandableListAdapter.lastExpandedPosition = groupPosition;
             }
         });
 
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                // Reset list view
+                listView.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
+                ExpandableListAdapter.selectedItemId = -1;
+                listAdapter.notifyDataSetChanged();
+
+                Singleton.getInstance()
+                        .getManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_right, R.anim.enter_right)
+                        .replace(
+                                R.id.fragment_container,
+                                new ProductsFragment()
+                        ).commit();
 
                 return false;
             }
