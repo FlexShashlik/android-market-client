@@ -15,9 +15,9 @@ import java.util.List;
 
 public class CatalogFragment extends Fragment {
     private ExpandableListView listView;
-    private ExpandableListAdapter listAdapter;
-    private List<String> listCatalog;
-    private HashMap<String, List<String>> listHashMap;
+    static ExpandableListAdapter listAdapter;
+    static List<String> listCatalog;
+    static HashMap<String, List<String>> listHashMap;
 
     @Nullable
     @Override
@@ -34,15 +34,9 @@ public class CatalogFragment extends Fragment {
 
         // Fetch data here
         MarketAPI.GetCatalog(getContext());
-        MarketAPI.GetSubCatalog(getContext());
 
         listCatalog = new ArrayList<>();
         listHashMap = new HashMap<>();
-
-        listCatalog.add("Кровельные элементы");
-        listCatalog.add("Доборные элементы");
-        listHashMap.put("Кровельные элементы", new ArrayList<String>(){{add("Крыша 1"); add("Крыша 2");}});
-        listHashMap.put("Доборные элементы", new ArrayList<String>(){{add("Кирпич 1"); add("Кирпичик 2"); add("Камень 1");}});
 
         listAdapter = new ExpandableListAdapter(getContext(), listCatalog, listHashMap);
         listView.setAdapter(listAdapter);
@@ -95,5 +89,30 @@ public class CatalogFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    public static void SetCatalog(List<Catalog> catalogList) {
+        listCatalog.clear();
+        listHashMap.clear();
+
+        for (int i = 0; i < catalogList.size(); i++) {
+            listCatalog.add(catalogList.get(i).Name);
+        }
+    }
+
+    public static void SetSubCatalog(List<Catalog> catalogList, List<SubCatalog> subCatalogList) {
+        for (int i = 0; i < catalogList.size(); i++) {
+            List<String> sc = new ArrayList<>();
+
+            for (int j = 0; j < subCatalogList.size(); j++) {
+                if (subCatalogList.get(j).CatalogID == catalogList.get(i).ID) {
+                    sc.add(subCatalogList.get(j).Name);
+                }
+            }
+
+            listHashMap.put(catalogList.get(i).Name, sc);
+        }
+
+        listAdapter.notifyDataSetChanged();
     }
 }

@@ -30,6 +30,10 @@ class MarketAPI {
 // TODO: Helper class or method for requests
 
     static void GetCatalog(final Context context) {
+        // Reset previous values
+        ExpandableListAdapter.catalog.clear();
+        ExpandableListAdapter.subCatalog.clear();
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String URL = api_server + "catalog/";
@@ -48,7 +52,8 @@ class MarketAPI {
                         });
                     }
 
-                    Toast.makeText(context, ExpandableListAdapter.catalog.get(0).Name, Toast.LENGTH_LONG).show();
+                    CatalogFragment.SetCatalog(ExpandableListAdapter.catalog);
+                    GetSubCatalog(context);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -89,7 +94,7 @@ class MarketAPI {
                         });
                     }
 
-                    Toast.makeText(context, ExpandableListAdapter.subCatalog.get(1).Name, Toast.LENGTH_LONG).show();
+                    CatalogFragment.SetSubCatalog(ExpandableListAdapter.catalog, ExpandableListAdapter.subCatalog);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
