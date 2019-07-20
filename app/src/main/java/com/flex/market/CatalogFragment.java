@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class CatalogFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.listViewCategories);
+        listView = view.findViewById(R.id.listViewCatalog);
         listView.setGroupIndicator(null);
 
         // Fetch data here
@@ -71,6 +72,17 @@ public class CatalogFragment extends Fragment {
         listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                for (int j = 0; j < ExpandableListAdapter.subCatalog.size(); j++) {
+                    SubCatalog subCatalog = ExpandableListAdapter.subCatalog.get(j);
+                    String subCatalogName = listHashMap.get(listCatalog.get(i)).get(i1);
+
+                    if (subCatalog.Name.equals(subCatalogName)) {
+                        MarketAPI.selectedSubCatalog = subCatalog.ID;
+                        Toast.makeText(getContext(), String.valueOf(subCatalog.ID), Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                }
+
                 // Reset list view
                 listView.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
                 ExpandableListAdapter.selectedItemId = -1;

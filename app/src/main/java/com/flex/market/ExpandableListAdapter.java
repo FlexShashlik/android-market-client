@@ -13,37 +13,37 @@ import java.util.List;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context context;
-    private List<String> listCategories;
+    private List<String> listCatalog;
     private HashMap<String, List<String>> listHashMap;
     static int selectedItemId = -1;
     static int lastExpandedPosition = -1;
     static List<Catalog> catalog = new ArrayList<>();
     static List<SubCatalog> subCatalog = new ArrayList<>();
 
-    ExpandableListAdapter(Context context, List<String> listCategories, HashMap<String, List<String>> listHashMap) {
+    ExpandableListAdapter(Context context, List<String> listCatalog, HashMap<String, List<String>> listHashMap) {
         this.context = context;
-        this.listCategories = listCategories;
+        this.listCatalog = listCatalog;
         this.listHashMap = listHashMap;
     }
 
     @Override
     public int getGroupCount() {
-        return listCategories.size();
+        return listCatalog.size();
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return listHashMap.get(listCategories.get(groupPosition)).size();
+        return listHashMap.get(listCatalog.get(groupPosition)).size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return listCategories.get(groupPosition);
+        return listCatalog.get(groupPosition);
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return listHashMap.get(listCategories.get(groupPosition)).get(childPosition);
+        return listHashMap.get(listCatalog.get(groupPosition)).get(childPosition);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_category, null);
+            convertView = inflater.inflate(R.layout.list_catalog, null);
         }
 
         TextView listCategory = convertView.findViewById(R.id.listCategory);
@@ -87,7 +87,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.list_category_item, null);
+            convertView = inflater.inflate(R.layout.list_catalog_item, null);
         }
 
         TextView listChild = convertView.findViewById(R.id.listItem);

@@ -18,14 +18,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 class MarketAPI {
     static String token;
     private static String api_server = "http://192.168.1.162/api/v1/";
-    static List<String> listCategories;
-    static HashMap<String, List<String>> listHashMap;
+    static int selectedSubCatalog = -1;
 
 // TODO: Helper class or method for requests
 
@@ -74,7 +72,7 @@ class MarketAPI {
         queue.add(jsonArrayRequest);
     }
 
-    static void GetSubCatalog(final Context context) {
+    private static void GetSubCatalog(final Context context) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String URL = api_server + "sub_catalog/";
