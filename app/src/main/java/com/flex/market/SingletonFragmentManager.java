@@ -2,11 +2,11 @@ package com.flex.market;
 
 import android.support.v4.app.FragmentManager;
 
-class Singleton {
-    private static final Singleton ourInstance = new Singleton();
+class SingletonFragmentManager {
+    private static final SingletonFragmentManager ourInstance = new SingletonFragmentManager();
     private static FragmentManager manager;
 
-    static Singleton getInstance() {
+    static SingletonFragmentManager getInstance() {
         return ourInstance;
     }
 

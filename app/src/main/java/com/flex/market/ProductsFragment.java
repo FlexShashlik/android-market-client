@@ -9,11 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.annotation.GlideModule;
 
 public class ProductsFragment extends Fragment {
+    static ImageView imageView;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,12 +28,10 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageView imageView = view.findViewById(R.id.my_img_view);
+        ListView listView = view.findViewById(R.id.listViewProducts);
+    }
 
-        GlideApp.with(this)
-                .load("http://192.168.1.162/images/11.png")
-                .error(R.mipmap.ic_launcher)
-                .placeholder(R.drawable.ic_cached_48dp)
-                .into(imageView);
+    static void SetImageView() {
+
     }
 }

@@ -17,21 +17,19 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-class MarketAPI {
+final class MarketAPI {
     static String token;
-    private static String api_server = "http://192.168.1.162/api/v1/";
+    private static String api_server = "http://old-fox-48.localtunnel.me/api/v1/";
     static int selectedSubCatalog = -1;
 
 // TODO: Helper class or method for requests
 
     static void GetCatalog(final Context context) {
-        // Reset previous values
-        ExpandableListAdapter.catalog.clear();
-        ExpandableListAdapter.subCatalog.clear();
-
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
         String URL = api_server + "catalog/";
@@ -113,6 +111,51 @@ class MarketAPI {
         queue.add(jsonArrayRequest);
     }
 
+    static void GetProducts(final Context context) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = api_server + "products/";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    List<Product> products = new ArrayList<>();
+
+                    for(int i = 0; i < response.length(); i++) {
+                        final JSONObject product = response.getJSONObject(i);
+                        products.add(new Product() {
+                            {
+                                ID = product.getInt("id");
+                                Name = product.getString("name");
+                                Price = product.getInt("price");
+                                ImageExtension = product.getString("image_extension");
+                                SubCatalogID = product.getInt("sub_catalog_id");
+                            }
+                        });
+                    }
+
+                    //ProductsFragment.SetImageView(products);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
     static void GetToken(final Context context, String email, String password) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -130,7 +173,7 @@ class MarketAPI {
                     try {
                         Helper.showProgress(false, LoginFragment.progressBar);
                         token = response.getString("token");
-                        Singleton.getInstance()
+                        SingletonFragmentManager.getInstance()
                                 .getManager()
                                 .beginTransaction()
                                 .setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left)
@@ -203,15 +246,7 @@ class MarketAPI {
                     Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     error.printStackTrace();
                 }
-            }){
-                // set headers
-                @Override
-                public Map <String, String> getHeaders(){
-                    Map<String, String> params = new HashMap<>();
-                    //params.put("Authorization: Bearer", TOKEN);
-                    return params;
-                }
-            };
+            });
 
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                     5000,

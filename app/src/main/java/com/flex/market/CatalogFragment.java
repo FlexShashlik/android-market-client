@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CatalogFragment extends Fragment {
-    private ExpandableListView listView;
+    ExpandableListView listViewCatalog;
     static ExpandableListAdapter listAdapter;
     static List<String> listCatalog;
     static HashMap<String, List<String>> listHashMap;
@@ -30,19 +30,20 @@ public class CatalogFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView = view.findViewById(R.id.listViewCatalog);
-        listView.setGroupIndicator(null);
+        listViewCatalog = view.findViewById(R.id.listViewCatalog);
+        listViewCatalog.setGroupIndicator(null);
 
-        // Fetch data here
-        MarketAPI.GetCatalog(getContext());
+        if (listCatalog == null) {
+            MarketAPI.GetCatalog(getContext());
 
-        listCatalog = new ArrayList<>();
-        listHashMap = new HashMap<>();
+            listCatalog = new ArrayList<>();
+            listHashMap = new HashMap<>();
+        }
 
         listAdapter = new ExpandableListAdapter(getContext(), listCatalog, listHashMap);
-        listView.setAdapter(listAdapter);
+        listViewCatalog.setAdapter(listAdapter);
 
-        listView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+        listViewCatalog.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
                 if (parent.isGroupExpanded(groupPosition)) {
@@ -59,17 +60,17 @@ public class CatalogFragment extends Fragment {
             }
         });
 
-        listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        listViewCatalog.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
                 if (groupPosition != ExpandableListAdapter.lastExpandedPosition) {
-                    listView.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
+                    listViewCatalog.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
                 }
                 ExpandableListAdapter.lastExpandedPosition = groupPosition;
             }
         });
 
-        listView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        listViewCatalog.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
                 for (int j = 0; j < ExpandableListAdapter.subCatalog.size(); j++) {
@@ -84,11 +85,11 @@ public class CatalogFragment extends Fragment {
                 }
 
                 // Reset list view
-                listView.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
+                listViewCatalog.collapseGroup(ExpandableListAdapter.lastExpandedPosition);
                 ExpandableListAdapter.selectedItemId = -1;
                 listAdapter.notifyDataSetChanged();
 
-                Singleton.getInstance()
+                SingletonFragmentManager.getInstance()
                         .getManager()
                         .beginTransaction()
                         .addToBackStack(null)

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         transaction.setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left);
 
-        Singleton.getInstance().setManager(fragmentManager);
+        SingletonFragmentManager.getInstance().setManager(fragmentManager);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(

@@ -17,13 +17,12 @@
             android:layout_gravity="center"
             android:text="@string/fragment_products" />
 
-        <ImageView
-            android:id="@+id/my_img_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/fragment_products"
-            android:layout_gravity="center_horizontal">
-        </ImageView>
+            <ListView
+                android:id="@+id/listViewProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </ListView>
 
     </LinearLayout>
 
