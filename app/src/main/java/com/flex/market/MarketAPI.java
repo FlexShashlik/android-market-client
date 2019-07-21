@@ -24,7 +24,8 @@ import java.util.Map;
 
 final class MarketAPI {
     static String token;
-    private static String api_server = "http://old-fox-48.localtunnel.me/api/v1/";
+    final static String SERVER = "http://192.168.1.162/";
+    final static String API = "api/v1/";
     static int selectedSubCatalog = -1;
 
 // TODO: Helper class or method for requests
@@ -32,7 +33,7 @@ final class MarketAPI {
     static void GetCatalog(final Context context) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL = api_server + "catalog/";
+        String URL = SERVER + API + "catalog/";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -73,7 +74,7 @@ final class MarketAPI {
     private static void GetSubCatalog(final Context context) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL = api_server + "sub_catalog/";
+        String URL = SERVER + API + "sub_catalog/";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -114,7 +115,7 @@ final class MarketAPI {
     static void GetProducts(final Context context) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL = api_server + "products/";
+        String URL = SERVER + API + "products/" + selectedSubCatalog;
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -135,7 +136,7 @@ final class MarketAPI {
                         });
                     }
 
-                    //ProductsFragment.SetImageView(products);
+                    ProductsFragment.SetProducts(products);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -159,7 +160,7 @@ final class MarketAPI {
     static void GetToken(final Context context, String email, String password) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL = api_server + "auth/login/";
+        String URL = SERVER + API + "auth/login/";
 
         try {
             JSONObject jsonBody = new JSONObject();
@@ -216,7 +217,7 @@ final class MarketAPI {
     static void SignUp(final Context context, String firstName, String lastName, String email, String password) {
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
-        String URL = api_server + "sign_up/";
+        String URL = SERVER + API + "sign_up/";
 
         try {
             JSONObject jsonBody = new JSONObject();

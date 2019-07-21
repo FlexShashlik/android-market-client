@@ -8,14 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductsFragment extends Fragment {
-    static ImageView imageView;
+    static ImageListAdapter imageListAdapter;
+    static List<Product> products = new ArrayList<>();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -28,10 +28,20 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        ImageListAdapter.images.clear();
+        MarketAPI.GetProducts(getContext());
+
         ListView listView = view.findViewById(R.id.listViewProducts);
+
+        imageListAdapter = new ImageListAdapter(getContext());
+        listView.setAdapter(imageListAdapter);
     }
 
-    static void SetImageView() {
+    public static void SetProducts(List<Product> products) {
+        for (int i = 0; i < products.size(); i++) {
+            ImageListAdapter.images.add(MarketAPI.SERVER + "images/" + products.get(i).ID + "." + products.get(i).ImageExtension);
+        }
 
+        imageListAdapter.notifyDataSetChanged();
     }
 }
