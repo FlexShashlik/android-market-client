@@ -2,6 +2,7 @@ package com.flex.market;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -174,10 +175,16 @@ final class MarketAPI {
                     try {
                         Helper.showProgress(false, LoginFragment.progressBar);
                         token = response.getString("token");
+
+                        // For prevent previous back-stack animation
+                        SingletonFragmentManager.getInstance()
+                                .getManager()
+                                .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                         SingletonFragmentManager.getInstance()
                                 .getManager()
                                 .beginTransaction()
-                                .setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left)
+                                .setCustomAnimations(R.anim.enter_left, R.anim.exit_left)
                                 .replace(
                                     R.id.fragment_container,
                                     new ProfileFragment()
