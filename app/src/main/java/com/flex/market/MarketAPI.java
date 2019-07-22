@@ -18,15 +18,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 final class MarketAPI {
     static String token;
     final static String SERVER = "http://192.168.1.162/";
-    final static String API = "api/v1/";
+    private final static String API = "api/v1/";
     static int selectedSubCatalog = -1;
 
 // TODO: Helper class or method for requests
@@ -122,11 +120,9 @@ final class MarketAPI {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    List<Product> products = new ArrayList<>();
-
                     for(int i = 0; i < response.length(); i++) {
                         final JSONObject product = response.getJSONObject(i);
-                        products.add(new Product() {
+                        ProductsListAdapter.products.add(new Product() {
                             {
                                 ID = product.getInt("id");
                                 Name = product.getString("name");
@@ -137,7 +133,7 @@ final class MarketAPI {
                         });
                     }
 
-                    ProductsFragment.SetProducts(products);
+                    ProductsFragment.productsListAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

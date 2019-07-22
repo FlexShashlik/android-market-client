@@ -10,12 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class ProductsFragment extends Fragment {
-    static ImageListAdapter imageListAdapter;
-    static List<Product> products = new ArrayList<>();
+    static ProductsListAdapter productsListAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -28,20 +24,12 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ImageListAdapter.images.clear();
-        MarketAPI.GetProducts(getContext());
-
+        ProductsListAdapter.products.clear();
         ListView listView = view.findViewById(R.id.listViewProducts);
 
-        imageListAdapter = new ImageListAdapter(getContext());
-        listView.setAdapter(imageListAdapter);
-    }
+        MarketAPI.GetProducts(getContext());
 
-    public static void SetProducts(List<Product> products) {
-        for (int i = 0; i < products.size(); i++) {
-            ImageListAdapter.images.add(MarketAPI.SERVER + "images/" + products.get(i).ID + "." + products.get(i).ImageExtension);
-        }
-
-        imageListAdapter.notifyDataSetChanged();
+        productsListAdapter = new ProductsListAdapter(getContext());
+        listView.setAdapter(productsListAdapter);
     }
 }
