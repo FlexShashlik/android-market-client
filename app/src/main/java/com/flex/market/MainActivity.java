@@ -11,7 +11,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
-    FragmentTransaction transaction = fragmentManager.beginTransaction();
+    static String previousFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        transaction.setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_left, R.anim.enter_left);
 
         SingletonFragmentManager.getInstance().setManager(fragmentManager);
 
@@ -39,9 +37,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             Fragment selectedFragment = null;
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             switch (item.getItemId()) {
                 case R.id.navigation_catalog:
+                    if (previousFragment != null && previousFragment.equals(ProductsFragment.class.getSimpleName())) {
+                        transaction.setCustomAnimations(R.anim.exit_right, R.anim.enter_right);
+                        previousFragment = null;
+                    }
+
                     selectedFragment = new CatalogFragment();
                     break;
                 case R.id.navigation_shopping_list:
@@ -58,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
             if(selectedFragment != null)
             {
-                getSupportFragmentManager().beginTransaction().replace(
+                previousFragment = selectedFragment.getClass().getSimpleName();
+                transaction.replace(
                         R.id.fragment_container,
                         selectedFragment
                 ).commit();

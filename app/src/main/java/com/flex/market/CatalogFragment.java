@@ -89,6 +89,8 @@ public class CatalogFragment extends Fragment {
                 ExpandableListAdapter.selectedItemId = -1;
                 listAdapter.notifyDataSetChanged();
 
+                MainActivity.previousFragment = ProductsFragment.class.getSimpleName();
+
                 SingletonFragmentManager.getInstance()
                         .getManager()
                         .beginTransaction()
