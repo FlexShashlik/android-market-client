@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
@@ -28,7 +29,7 @@ class ProductsListAdapter extends ArrayAdapter {
         this.context = context;
 
         inflater = LayoutInflater.from(context);
-        requestOptions = requestOptions.transform(new RoundedCorners(16)).fitCenter();
+        requestOptions = requestOptions.transform(new FitCenter(), new RoundedCorners(32));
     }
 
     @NonNull

@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.concurrent.TimeUnit;
+
 public class ProductsFragment extends Fragment {
     static ProductsListAdapter productsListAdapter;
 
@@ -27,7 +29,21 @@ public class ProductsFragment extends Fragment {
         ProductsListAdapter.products.clear();
         ListView listView = view.findViewById(R.id.listViewProducts);
 
-        MarketAPI.GetProducts(getContext());
+        // Preventing lags
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    TimeUnit.MILLISECONDS.sleep(
+                            getResources().getInteger(
+                                    android.R.integer.config_mediumAnimTime
+                            )
+                    );
+                    MarketAPI.GetProducts(getContext());
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
 
         productsListAdapter = new ProductsListAdapter(getContext());
         listView.setAdapter(productsListAdapter);
