@@ -196,15 +196,7 @@ final class MarketAPI {
                     Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     error.printStackTrace();
                 }
-            }){
-                // set headers
-                @Override
-                public Map <String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<>();
-                    //params.put("Authorization: Bearer", TOKEN);
-                    return params;
-                }
-            };
+            });
 
             jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
                     5000,
@@ -235,7 +227,7 @@ final class MarketAPI {
                 public void onResponse(JSONObject response) {
                     try {
                         Helper.showProgress(false, SignUpActivity.progressBar);
-                        Toast.makeText(context, "UserID: " + response.getString("userID"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "ID: " + response.getString("ID"), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(context, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(intent);
