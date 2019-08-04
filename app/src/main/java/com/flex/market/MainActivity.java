@@ -11,7 +11,6 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
-    static String previousFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,24 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.navigation_catalog:
-                    if (previousFragment != null && previousFragment.equals(ProductsFragment.class.getSimpleName())) {
-                        transaction.setCustomAnimations(R.anim.exit_right, R.anim.enter_right);
-                        previousFragment = null;
-                    }
-
                     selectedFragment = new CatalogFragment();
                     break;
                 case R.id.navigation_shopping_list:
-                    // For prevent previous back-stack animation
-                    fragmentManager
-                            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    ClearBackStack();
 
                     selectedFragment = new ShoppingListFragment();
                     break;
                 case R.id.navigation_profile:
-                    // For prevent previous back-stack animation
-                    fragmentManager
-                            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    ClearBackStack();
 
                     if (MarketAPI.token != null) {
                         selectedFragment = new ProfileFragment();
@@ -70,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
 
             if(selectedFragment != null)
             {
-                previousFragment = selectedFragment.getClass().getSimpleName();
                 transaction.replace(
                         R.id.fragment_container,
                         selectedFragment
@@ -80,4 +69,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
     };
+
+    private void ClearBackStack() {
+        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+    }
 }

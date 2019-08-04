@@ -22,6 +22,7 @@ class ProductsListAdapter extends ArrayAdapter {
     private RequestOptions requestOptions = new RequestOptions();
 
     static List<Product> products = new ArrayList<>();
+    static int selectedProductID = -1;
 
     ProductsListAdapter(Context context) {
         super(context, R.layout.list_products_item, products);

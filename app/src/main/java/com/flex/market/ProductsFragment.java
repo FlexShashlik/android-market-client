@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.concurrent.TimeUnit;
@@ -47,5 +48,22 @@ public class ProductsFragment extends Fragment {
 
         productsListAdapter = new ProductsListAdapter(getContext());
         listView.setAdapter(productsListAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProductsListAdapter.selectedProductID = position;
+
+                SingletonFragmentManager.getInstance()
+                        .getManager()
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .setCustomAnimations(R.anim.enter_left, R.anim.exit_left)
+                        .replace(
+                                R.id.fragment_container,
+                                new ProductInfoFragment()
+                        ).commit();
+            }
+        });
     }
 }

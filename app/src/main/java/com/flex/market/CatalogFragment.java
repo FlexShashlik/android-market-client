@@ -89,13 +89,11 @@ public class CatalogFragment extends Fragment {
                 ExpandableListAdapter.selectedItemId = -1;
                 listAdapter.notifyDataSetChanged();
 
-                MainActivity.previousFragment = ProductsFragment.class.getSimpleName();
-
                 SingletonFragmentManager.getInstance()
                         .getManager()
                         .beginTransaction()
                         .addToBackStack(null)
-                        .setCustomAnimations(R.anim.enter_left, R.anim.exit_left, R.anim.exit_right, R.anim.enter_right)
+                        .setCustomAnimations(R.anim.enter_left, R.anim.exit_left)
                         .replace(
                                 R.id.fragment_container,
                                 new ProductsFragment()

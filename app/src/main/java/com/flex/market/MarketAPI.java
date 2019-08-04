@@ -172,11 +172,6 @@ final class MarketAPI {
                         Helper.showProgress(false, LoginFragment.progressBar);
                         token = response.getString("token");
 
-                        // For prevent previous back-stack animation
-                        SingletonFragmentManager.getInstance()
-                                .getManager()
-                                .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-
                         SingletonFragmentManager.getInstance()
                                 .getManager()
                                 .beginTransaction()
