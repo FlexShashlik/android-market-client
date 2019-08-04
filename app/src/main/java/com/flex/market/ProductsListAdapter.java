@@ -29,7 +29,7 @@ class ProductsListAdapter extends ArrayAdapter {
         this.context = context;
 
         inflater = LayoutInflater.from(context);
-        requestOptions = requestOptions.transform(new FitCenter(), new RoundedCorners(32));
+        requestOptions = requestOptions.transform(new FitCenter());
     }
 
     @NonNull

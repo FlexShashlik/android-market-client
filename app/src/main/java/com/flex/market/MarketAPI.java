@@ -23,7 +23,7 @@ import java.util.Map;
 
 final class MarketAPI {
     static String token;
-    final static String SERVER = "http://192.168.1.162/";
+    final static String SERVER = "http://192.168.43.55/";
     private final static String API = "api/v1/";
     static int selectedSubCatalog = -1;
 

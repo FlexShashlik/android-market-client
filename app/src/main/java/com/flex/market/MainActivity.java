@@ -49,9 +49,17 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new CatalogFragment();
                     break;
                 case R.id.navigation_shopping_list:
+                    // For prevent previous back-stack animation
+                    fragmentManager
+                            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                     selectedFragment = new ShoppingListFragment();
                     break;
                 case R.id.navigation_profile:
+                    // For prevent previous back-stack animation
+                    fragmentManager
+                            .popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
                     if (MarketAPI.token != null) {
                         selectedFragment = new ProfileFragment();
                     } else {
