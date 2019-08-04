@@ -30,6 +30,9 @@ public class ProductsFragment extends Fragment {
         ProductsListAdapter.products.clear();
         ListView listView = view.findViewById(R.id.listViewProducts);
 
+        productsListAdapter = new ProductsListAdapter(getContext());
+        listView.setAdapter(productsListAdapter);
+
         // Preventing lags
         new Thread(new Runnable() {
             public void run() {
@@ -45,9 +48,6 @@ public class ProductsFragment extends Fragment {
                 }
             }
         }).start();
-
-        productsListAdapter = new ProductsListAdapter(getContext());
-        listView.setAdapter(productsListAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

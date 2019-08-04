@@ -25,5 +25,6 @@
     <string name="fragment_products">Список Товаров</string>
     <string name="ImageViewDescription">Картинка</string>
     <string name="PriceMark">₽/шт.</string>
+    <string name="ral">RAL</string>
 
 </resources>

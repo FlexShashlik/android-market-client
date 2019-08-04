@@ -2,7 +2,6 @@ package com.flex.market;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -18,9 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
-
 final class MarketAPI {
     static String token;
     final static String SERVER = "http://192.168.43.55/";
@@ -28,6 +24,43 @@ final class MarketAPI {
     static int selectedSubCatalog = -1;
 
 // TODO: Helper class or method for requests
+
+    static void GetColors(final Context context) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = SERVER + API + "colors/";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for(int i = 0; i < response.length(); i++){
+                        final JSONObject colors = response.getJSONObject(i);
+                        ColorFlexboxAdapter.Colors.add(
+                                colors.getString("ral")
+                        );
+                    }
+
+                    ProductInfoFragment.colorFlexboxAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
 
     static void GetCatalog(final Context context) {
         // Instantiate the RequestQueue.
