@@ -83,20 +83,24 @@ public class ProductInfoFragment extends Fragment {
         colorFlexboxAdapter = new ColorFlexboxAdapter(view.getContext());
         recyclerView.setAdapter(colorFlexboxAdapter);
 
-        // Preventing lags
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(
-                            getResources().getInteger(
-                                    android.R.integer.config_mediumAnimTime
-                            )
-                    );
-                    MarketAPI.GetColors(getContext());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (ColorFlexboxAdapter.colors.isEmpty())
+        {
+            // Preventing lags
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(
+                                getResources().getInteger(
+                                        android.R.integer.config_mediumAnimTime
+                                )
+                        );
+
+                        MarketAPI.GetColors(getContext());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+        }
     }
 }

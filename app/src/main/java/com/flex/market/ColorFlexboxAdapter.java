@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ColorFlexboxAdapter extends RecyclerView.Adapter<ColorFlexboxAdapter.ColorViewHolder> {
-    static ArrayList<String> Colors = new ArrayList<>();
+    static ArrayList<String> colors = new ArrayList<>();
     private Context Context;
 
     ColorFlexboxAdapter(Context context) {
@@ -30,15 +30,15 @@ public class ColorFlexboxAdapter extends RecyclerView.Adapter<ColorFlexboxAdapte
     public void onBindViewHolder(@NonNull ColorFlexboxAdapter.ColorViewHolder viewHolder, int i) {
         GlideApp.with(Context)
                 .asBitmap()
-                .load(MarketAPI.SERVER + "colors/" + Colors.get(i) + ".jpg")
+                .load(MarketAPI.SERVER + "colors/" + colors.get(i) + ".jpg")
                 .into(viewHolder.image);
 
-        viewHolder.name.setText(Colors.get(i));
+        viewHolder.name.setText(colors.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return Colors.size();
+        return colors.size();
     }
 
     class ColorViewHolder extends RecyclerView.ViewHolder {

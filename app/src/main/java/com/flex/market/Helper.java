@@ -2,9 +2,12 @@ package com.flex.market;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.arch.core.util.Function;
+import android.content.Context;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import java.util.concurrent.Callable;
 import java.util.regex.Pattern;
 
 final class Helper {

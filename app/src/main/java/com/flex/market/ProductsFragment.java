@@ -27,27 +27,34 @@ public class ProductsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ProductsListAdapter.products.clear();
         ListView listView = view.findViewById(R.id.listViewProducts);
 
         productsListAdapter = new ProductsListAdapter(getContext());
         listView.setAdapter(productsListAdapter);
 
-        // Preventing lags
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(
-                            getResources().getInteger(
-                                    android.R.integer.config_mediumAnimTime
-                            )
-                    );
-                    MarketAPI.GetProducts(getContext());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (MarketAPI.previousSubCatalog != MarketAPI.selectedSubCatalog)
+        {
+            ProductsListAdapter.products.clear();
+
+            // Preventing lags
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(
+                                getResources().getInteger(
+                                        android.R.integer.config_mediumAnimTime
+                                )
+                        );
+
+                        MarketAPI.GetProducts(getContext());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        }).start();
+            }).start();
+
+            MarketAPI.previousSubCatalog = MarketAPI.selectedSubCatalog;
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
