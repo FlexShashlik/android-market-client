@@ -75,7 +75,7 @@ public class ProductInfoFragment extends Fragment {
 
 
         layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
         layoutManager.setAlignItems(AlignItems.FLEX_START);
 
         recyclerView.setLayoutManager(layoutManager);

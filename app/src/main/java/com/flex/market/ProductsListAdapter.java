@@ -9,17 +9,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.load.resource.bitmap.FitCenter;
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
-import com.bumptech.glide.request.RequestOptions;
-
 import java.util.ArrayList;
 import java.util.List;
 
 class ProductsListAdapter extends ArrayAdapter {
     private Context context;
     private LayoutInflater inflater;
-    private RequestOptions requestOptions = new RequestOptions();
 
     static List<Product> products = new ArrayList<>();
     static int selectedProductID = -1;
@@ -30,7 +25,6 @@ class ProductsListAdapter extends ArrayAdapter {
         this.context = context;
 
         inflater = LayoutInflater.from(context);
-        requestOptions = requestOptions.transform(new FitCenter());
     }
 
     @NonNull
@@ -49,7 +43,7 @@ class ProductsListAdapter extends ArrayAdapter {
                         products.get(position).ImageExtension
                 )
                 .placeholder(R.drawable.ic_image_placeholder)
-                .apply(requestOptions)
+                .fitCenter()
                 .into((ImageView) convertView.findViewById(R.id.imageViewProduct));
 
         TextView tvProductName = convertView.findViewById(R.id.textViewProductName);
