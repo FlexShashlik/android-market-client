@@ -27,6 +27,45 @@ final class MarketAPI {
 
 // TODO: Helper class or method for requests
 
+    static void GetCoverings(final Context context) {
+        CoveringsFlexboxAdapter.coverings.clear();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = SERVER + API + "coverings/";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        final JSONObject covering = response.getJSONObject(i);
+                        CoveringsFlexboxAdapter.coverings.add(
+                                covering.getString("name")
+                        );
+                    }
+
+                    ProductInfoFragment.coveringsFlexboxAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
     static void GetColors(final Context context) {
         ColorsFlexboxAdapter.colors.clear();
 
@@ -39,9 +78,9 @@ final class MarketAPI {
             public void onResponse(JSONArray response) {
                 try {
                     for(int i = 0; i < response.length(); i++){
-                        final JSONObject colors = response.getJSONObject(i);
+                        final JSONObject color = response.getJSONObject(i);
                         ColorsFlexboxAdapter.colors.add(
-                                colors.getString("ral")
+                                color.getString("ral")
                         );
                     }
 

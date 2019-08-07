@@ -25,13 +25,13 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
 
     @NonNull
     @Override
-    public ColorsFlexboxAdapter.ColorViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ColorViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_color_recycler_item, viewGroup, false);
         return new ColorViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ColorsFlexboxAdapter.ColorViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ColorViewHolder viewHolder, int i) {
         GlideApp.with(Context)
                 .asBitmap()
                 .fitCenter()

@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ProductInfoFragment extends Fragment {
     static ColorsFlexboxAdapter colorsFlexboxAdapter;
+    static CoveringsFlexboxAdapter coveringsFlexboxAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -65,26 +66,28 @@ public class ProductInfoFragment extends Fragment {
                 )
         );
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewColors);
+        // region Colors
 
-        FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(
+        RecyclerView recyclerViewColors = view.findViewById(R.id.recyclerViewColors);
+
+        FlexboxLayoutManager layoutManagerColors = new FlexboxLayoutManager(
                 view.getContext(),
                 LinearLayoutManager.HORIZONTAL
         );
 
-        layoutManager.setFlexDirection(FlexDirection.ROW);
-        layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
-        layoutManager.setAlignItems(AlignItems.FLEX_START);
+        layoutManagerColors.setFlexDirection(FlexDirection.ROW);
+        layoutManagerColors.setJustifyContent(JustifyContent.SPACE_BETWEEN);
+        layoutManagerColors.setAlignItems(AlignItems.FLEX_START);
 
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerViewColors.setLayoutManager(layoutManagerColors);
 
         colorsFlexboxAdapter = new ColorsFlexboxAdapter(view.getContext());
-        recyclerView.setAdapter(colorsFlexboxAdapter);
+        recyclerViewColors.setAdapter(colorsFlexboxAdapter);
 
-        if (ColorsFlexboxAdapter.colors.isEmpty())
-        {
+        if (ColorsFlexboxAdapter.colors.isEmpty()) {
             // Preventing lags
             new Thread(new Runnable() {
+                @Override
                 public void run() {
                     try {
                         TimeUnit.MILLISECONDS.sleep(
@@ -100,5 +103,47 @@ public class ProductInfoFragment extends Fragment {
                 }
             }).start();
         }
+
+        // endregion
+
+        // region Coverings
+
+        RecyclerView recyclerViewCoverings = view.findViewById(R.id.recyclerViewCoverings);
+
+        FlexboxLayoutManager layoutManagerCoverings = new FlexboxLayoutManager(
+                view.getContext(),
+                LinearLayoutManager.HORIZONTAL
+        );
+
+        layoutManagerCoverings.setFlexDirection(FlexDirection.ROW);
+        layoutManagerCoverings.setJustifyContent(JustifyContent.FLEX_START);
+        layoutManagerCoverings.setAlignItems(AlignItems.FLEX_START);
+
+        recyclerViewCoverings.setLayoutManager(layoutManagerCoverings);
+
+        coveringsFlexboxAdapter = new CoveringsFlexboxAdapter();
+        recyclerViewCoverings.setAdapter(coveringsFlexboxAdapter);
+
+        if (CoveringsFlexboxAdapter.coverings.isEmpty()) {
+            // Preventing lags
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(
+                                getResources().getInteger(
+                                        android.R.integer.config_mediumAnimTime
+                                )
+                        );
+
+                        MarketAPI.GetCoverings(getContext());
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+        // endregion
     }
 }

@@ -30,7 +30,6 @@
             android:layout_marginStart="@dimen/text_margin"
             android:layout_marginEnd="5dp"
             android:textSize="20sp"
-            android:text="500"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
 
@@ -50,14 +49,17 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
         android:textSize="16sp"
-        android:text="Название"
         android:fontFamily="@font/pt_sans"
         android:textColor="@android:color/black"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewColors"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"/>
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewCoverings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

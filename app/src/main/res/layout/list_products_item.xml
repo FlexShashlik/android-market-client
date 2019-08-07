@@ -40,7 +40,6 @@
                     android:layout_marginStart="@dimen/text_margin"
                     android:layout_marginEnd="5dp"
                     android:textSize="20sp"
-                    android:text="500"
                     android:textStyle="bold"
                     android:textColor="@android:color/black"/>
 
