@@ -13,25 +13,25 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class ColorFlexboxAdapter extends RecyclerView.Adapter<ColorFlexboxAdapter.ColorViewHolder> {
+public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdapter.ColorViewHolder> {
     static ArrayList<String> colors = new ArrayList<>();
     static int selectedColor = -1;
     private static ColorViewHolder previousSelectedViewHolder;
     private Context Context;
 
-    ColorFlexboxAdapter(Context context) {
+    ColorsFlexboxAdapter(Context context) {
         Context = context;
     }
 
     @NonNull
     @Override
-    public ColorFlexboxAdapter.ColorViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public ColorsFlexboxAdapter.ColorViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_color_recycler_item, viewGroup, false);
         return new ColorViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ColorFlexboxAdapter.ColorViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ColorsFlexboxAdapter.ColorViewHolder viewHolder, int i) {
         GlideApp.with(Context)
                 .asBitmap()
                 .fitCenter()

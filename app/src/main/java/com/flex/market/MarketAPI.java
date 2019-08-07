@@ -2,7 +2,6 @@ package com.flex.market;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -29,7 +28,7 @@ final class MarketAPI {
 // TODO: Helper class or method for requests
 
     static void GetColors(final Context context) {
-        ColorFlexboxAdapter.colors.clear();
+        ColorsFlexboxAdapter.colors.clear();
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -41,12 +40,12 @@ final class MarketAPI {
                 try {
                     for(int i = 0; i < response.length(); i++){
                         final JSONObject colors = response.getJSONObject(i);
-                        ColorFlexboxAdapter.colors.add(
+                        ColorsFlexboxAdapter.colors.add(
                                 colors.getString("ral")
                         );
                     }
 
-                    ProductInfoFragment.colorFlexboxAdapter.notifyDataSetChanged();
+                    ProductInfoFragment.colorsFlexboxAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

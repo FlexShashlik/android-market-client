@@ -23,7 +23,7 @@ import com.google.android.flexbox.JustifyContent;
 import java.util.concurrent.TimeUnit;
 
 public class ProductInfoFragment extends Fragment {
-    static ColorFlexboxAdapter colorFlexboxAdapter;
+    static ColorsFlexboxAdapter colorsFlexboxAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -65,14 +65,12 @@ public class ProductInfoFragment extends Fragment {
                 )
         );
 
-
-        RecyclerView recyclerView = view.findViewById(R.id.colorRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewColors);
 
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(
                 view.getContext(),
                 LinearLayoutManager.HORIZONTAL
         );
-
 
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.SPACE_BETWEEN);
@@ -80,10 +78,10 @@ public class ProductInfoFragment extends Fragment {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        colorFlexboxAdapter = new ColorFlexboxAdapter(view.getContext());
-        recyclerView.setAdapter(colorFlexboxAdapter);
+        colorsFlexboxAdapter = new ColorsFlexboxAdapter(view.getContext());
+        recyclerView.setAdapter(colorsFlexboxAdapter);
 
-        if (ColorFlexboxAdapter.colors.isEmpty())
+        if (ColorsFlexboxAdapter.colors.isEmpty())
         {
             // Preventing lags
             new Thread(new Runnable() {
