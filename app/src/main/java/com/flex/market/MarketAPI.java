@@ -27,6 +27,60 @@ final class MarketAPI {
 
 // TODO: Helper class or method for requests
 
+    static void GetColorsBySelectedCovering(final Context context) {
+        ColorsFlexboxAdapter.colors.clear();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        final int coveringID = CoveringsFlexboxAdapter.selectedCoveringID;
+        final int colorID = ColorsFlexboxAdapter.selectedColorID;
+
+        String URL = SERVER + API + "colors/" + coveringID;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    boolean containsSelected = false;
+
+                    for (int i = 0; i < response.length(); i++) {
+                        final JSONObject color = response.getJSONObject(i);
+                        ColorsFlexboxAdapter.colors.add(new Color() {
+                            {
+                                ID = color.getInt("id");
+                                RAL = color.getInt("ral");
+                            }
+                        });
+
+                        if (ColorsFlexboxAdapter.colors.get(i).ID == colorID)
+                            containsSelected = true;
+                    }
+
+                    if (!containsSelected)
+                        ColorsFlexboxAdapter.selectedColorID = -1;
+
+                    ProductInfoFragment.colorsFlexboxAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
     static void GetCoverings(final Context context) {
         CoveringsFlexboxAdapter.coverings.clear();
 
@@ -40,9 +94,12 @@ final class MarketAPI {
                 try {
                     for (int i = 0; i < response.length(); i++) {
                         final JSONObject covering = response.getJSONObject(i);
-                        CoveringsFlexboxAdapter.coverings.add(
-                                covering.getString("name")
-                        );
+                        CoveringsFlexboxAdapter.coverings.add(new Covering() {
+                            {
+                                ID = covering.getInt("id");
+                                Name = covering.getString("name");
+                            }
+                        });
                     }
 
                     ProductInfoFragment.coveringsFlexboxAdapter.notifyDataSetChanged();
@@ -77,11 +134,14 @@ final class MarketAPI {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    for(int i = 0; i < response.length(); i++){
+                    for (int i = 0; i < response.length(); i++) {
                         final JSONObject color = response.getJSONObject(i);
-                        ColorsFlexboxAdapter.colors.add(
-                                color.getInt("ral")
-                        );
+                        ColorsFlexboxAdapter.colors.add(new Color() {
+                            {
+                                ID = color.getInt("id");
+                                RAL = color.getInt("ral");
+                            }
+                        });
                     }
 
                     ProductInfoFragment.colorsFlexboxAdapter.notifyDataSetChanged();
@@ -114,7 +174,7 @@ final class MarketAPI {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    for(int i = 0; i < response.length(); i++){
+                    for (int i = 0; i < response.length(); i++) {
                         final JSONObject catalog = response.getJSONObject(i);
                         ExpandableListAdapter.catalog.add(new Catalog() {
                             {
@@ -155,7 +215,7 @@ final class MarketAPI {
             @Override
             public void onResponse(JSONArray response) {
                 try {
-                    for(int i = 0; i < response.length(); i++){
+                    for (int i = 0; i < response.length(); i++) {
                         final JSONObject catalog = response.getJSONObject(i);
                         ExpandableListAdapter.subCatalog.add(new SubCatalog() {
                             {

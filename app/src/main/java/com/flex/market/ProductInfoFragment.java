@@ -76,7 +76,7 @@ public class ProductInfoFragment extends Fragment {
         );
 
         layoutManagerColors.setFlexDirection(FlexDirection.ROW);
-        layoutManagerColors.setJustifyContent(JustifyContent.SPACE_BETWEEN);
+        layoutManagerColors.setJustifyContent(JustifyContent.FLEX_START);
         layoutManagerColors.setAlignItems(AlignItems.FLEX_START);
 
         recyclerViewColors.setLayoutManager(layoutManagerColors);
@@ -121,7 +121,7 @@ public class ProductInfoFragment extends Fragment {
 
         recyclerViewCoverings.setLayoutManager(layoutManagerCoverings);
 
-        coveringsFlexboxAdapter = new CoveringsFlexboxAdapter();
+        coveringsFlexboxAdapter = new CoveringsFlexboxAdapter(getContext());
         recyclerViewCoverings.setAdapter(coveringsFlexboxAdapter);
 
         if (CoveringsFlexboxAdapter.coverings.isEmpty()) {

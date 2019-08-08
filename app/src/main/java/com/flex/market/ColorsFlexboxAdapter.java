@@ -13,9 +13,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdapter.ColorViewHolder> {
-    static ArrayList<Integer> colors = new ArrayList<>();
-    static int selectedColor = -1;
-    private static ColorViewHolder previousSelectedViewHolder;
+    static ArrayList<Color> colors = new ArrayList<>();
+    static int selectedColorID = -1;
+    private ColorViewHolder previousSelectedViewHolder;
     private Context Context;
 
     ColorsFlexboxAdapter(Context context) {
@@ -31,13 +31,24 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
 
     @Override
     public void onBindViewHolder(@NonNull final ColorViewHolder viewHolder, int i) {
+        if (selectedColorID == colors.get(i).ID) {
+            previousSelectedViewHolder = viewHolder;
+            viewHolder.layout.setCardBackgroundColor(
+                    Context.getResources().getColor(R.color.colorControlHighlight)
+            );
+        } else {
+            viewHolder.layout.setCardBackgroundColor(
+                    Context.getResources().getColor(android.R.color.white)
+            );
+        }
+
         GlideApp.with(Context)
                 .asBitmap()
                 .fitCenter()
-                .load(MarketAPI.SERVER + "colors/" + colors.get(i) + ".jpg")
+                .load(MarketAPI.SERVER + "colors/" + colors.get(i).RAL + ".jpg")
                 .into(viewHolder.image);
 
-        viewHolder.name.setText(String.valueOf(colors.get(i)));
+        viewHolder.name.setText(String.valueOf(colors.get(i).RAL));
 
         viewHolder.image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +78,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
                 );
 
                 previousSelectedViewHolder = null;
-                selectedColor = -1;
+                selectedColorID = -1;
                 return;
             }
 
@@ -76,7 +87,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
             );
         }
 
-        selectedColor = viewHolder.getAdapterPosition();
+        selectedColorID = colors.get(viewHolder.getAdapterPosition()).ID;
 
         viewHolder.layout.setCardBackgroundColor(
                 v.getResources().getColor(R.color.colorControlHighlight)

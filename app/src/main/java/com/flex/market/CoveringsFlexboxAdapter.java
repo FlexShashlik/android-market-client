@@ -1,5 +1,6 @@
 package com.flex.market;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexboxAdapter.CoveringViewHolder> {
-    static ArrayList<String> coverings = new ArrayList<>();
-    static int selectedCovering = -1;
+    static ArrayList<Covering> coverings = new ArrayList<>();
+    static int selectedCoveringID = -1;
     private static CoveringViewHolder previousSelectedViewHolder;
+
+    private Context Context;
+
+    public CoveringsFlexboxAdapter(Context context) {
+        Context = context;
+    }
 
     @NonNull
     @Override
@@ -24,9 +31,15 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
 
     @Override
     public void onBindViewHolder(@NonNull final CoveringViewHolder viewHolder, int i) {
+        if (selectedCoveringID == coverings.get(i).ID) {
+            viewHolder.layout.setCardBackgroundColor(
+                    Context.getResources().getColor(R.color.colorControlHighlight)
+            );
+        }
+
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 if (previousSelectedViewHolder != null) {
                     if (previousSelectedViewHolder == viewHolder) {
                         viewHolder.layout.setCardBackgroundColor(
@@ -34,7 +47,15 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
                         );
 
                         previousSelectedViewHolder = null;
-                        selectedCovering = -1;
+                        selectedCoveringID = -1;
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                MarketAPI.GetColors(v.getContext());
+                            }
+                        }).start();
+
                         return;
                     }
 
@@ -43,7 +64,14 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
                     );
                 }
 
-                selectedCovering = viewHolder.getAdapterPosition();
+                selectedCoveringID = coverings.get(viewHolder.getAdapterPosition()).ID;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MarketAPI.GetColorsBySelectedCovering(v.getContext());
+                    }
+                }).start();
 
                 viewHolder.layout.setCardBackgroundColor(
                         v.getResources().getColor(R.color.colorControlHighlight)
@@ -53,7 +81,7 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
             }
         });
 
-        viewHolder.name.setText(coverings.get(i));
+        viewHolder.name.setText(coverings.get(i).Name);
     }
 
     @Override
