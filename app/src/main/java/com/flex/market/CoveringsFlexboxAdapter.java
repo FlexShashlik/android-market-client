@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,14 +28,22 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
             @Override
             public void onClick(View v) {
                 if (previousSelectedViewHolder != null) {
+                    if (previousSelectedViewHolder == viewHolder) {
+                        viewHolder.layout.setCardBackgroundColor(
+                                v.getResources().getColor(android.R.color.white)
+                        );
+
+                        previousSelectedViewHolder = null;
+                        selectedCovering = -1;
+                        return;
+                    }
+
                     previousSelectedViewHolder.layout.setCardBackgroundColor(
                             v.getResources().getColor(android.R.color.white)
                     );
                 }
 
                 selectedCovering = viewHolder.getAdapterPosition();
-
-                Toast.makeText(v.getContext(), coverings.get(selectedCovering), Toast.LENGTH_LONG).show();
 
                 viewHolder.layout.setCardBackgroundColor(
                         v.getResources().getColor(R.color.colorControlHighlight)

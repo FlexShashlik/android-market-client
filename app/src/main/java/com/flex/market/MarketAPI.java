@@ -80,7 +80,7 @@ final class MarketAPI {
                     for(int i = 0; i < response.length(); i++){
                         final JSONObject color = response.getJSONObject(i);
                         ColorsFlexboxAdapter.colors.add(
-                                color.getString("ral")
+                                color.getInt("ral")
                         );
                     }
 

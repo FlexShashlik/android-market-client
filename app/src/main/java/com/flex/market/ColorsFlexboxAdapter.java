@@ -9,12 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdapter.ColorViewHolder> {
-    static ArrayList<String> colors = new ArrayList<>();
+    static ArrayList<Integer> colors = new ArrayList<>();
     static int selectedColor = -1;
     private static ColorViewHolder previousSelectedViewHolder;
     private Context Context;
@@ -38,7 +37,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
                 .load(MarketAPI.SERVER + "colors/" + colors.get(i) + ".jpg")
                 .into(viewHolder.image);
 
-        viewHolder.name.setText(colors.get(i));
+        viewHolder.name.setText(String.valueOf(colors.get(i)));
 
         viewHolder.image.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +61,22 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
 
     private void clickEvent(View v, ColorViewHolder viewHolder) {
         if (previousSelectedViewHolder != null) {
+            if (previousSelectedViewHolder == viewHolder) {
+                viewHolder.layout.setCardBackgroundColor(
+                        v.getResources().getColor(android.R.color.white)
+                );
+
+                previousSelectedViewHolder = null;
+                selectedColor = -1;
+                return;
+            }
+
             previousSelectedViewHolder.layout.setCardBackgroundColor(
                     v.getResources().getColor(android.R.color.white)
             );
         }
 
         selectedColor = viewHolder.getAdapterPosition();
-
-        Toast.makeText(v.getContext(), colors.get(selectedColor), Toast.LENGTH_LONG).show();
 
         viewHolder.layout.setCardBackgroundColor(
                 v.getResources().getColor(R.color.colorControlHighlight)
