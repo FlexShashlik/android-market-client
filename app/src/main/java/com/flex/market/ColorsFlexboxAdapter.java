@@ -33,6 +33,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
     public void onBindViewHolder(@NonNull final ColorViewHolder viewHolder, int i) {
         if (selectedColorID == colors.get(i).ID) {
             previousSelectedViewHolder = viewHolder;
+
             viewHolder.layout.setCardBackgroundColor(
                     Context.getResources().getColor(R.color.colorControlHighlight)
             );
@@ -70,7 +71,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
         return colors.size();
     }
 
-    private void clickEvent(View v, ColorViewHolder viewHolder) {
+    private void clickEvent(final View v, ColorViewHolder viewHolder) {
         if (previousSelectedViewHolder != null) {
             if (previousSelectedViewHolder == viewHolder) {
                 viewHolder.layout.setCardBackgroundColor(
@@ -79,6 +80,14 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
 
                 previousSelectedViewHolder = null;
                 selectedColorID = -1;
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        MarketAPI.GetCoverings(v.getContext());
+                    }
+                }).start();
+
                 return;
             }
 
@@ -88,6 +97,13 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
         }
 
         selectedColorID = colors.get(viewHolder.getAdapterPosition()).ID;
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                MarketAPI.GetCoveringsBySelectedColors(v.getContext());
+            }
+        }).start();
 
         viewHolder.layout.setCardBackgroundColor(
                 v.getResources().getColor(R.color.colorControlHighlight)

@@ -27,6 +27,62 @@ final class MarketAPI {
 
 // TODO: Helper class or method for requests
 
+    static void GetCoveringsBySelectedColors(final Context context) {
+        CoveringsFlexboxAdapter.coverings.clear();
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+
+        final int coveringID = CoveringsFlexboxAdapter.selectedCoveringID;
+        final int colorID = ColorsFlexboxAdapter.selectedColorID;
+
+        String URL = SERVER + API + "coverings/" + colorID;
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, URL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    boolean containsSelected = false;
+
+                    for (int i = 0; i < response.length(); i++) {
+                        final JSONObject covering = response.getJSONObject(i);
+                        CoveringsFlexboxAdapter.coverings.add(new Covering() {
+                            {
+                                ID = covering.getInt("id");
+                                Name = covering.getString("name");
+                            }
+                        });
+
+                        if (CoveringsFlexboxAdapter.coverings.get(i).ID == coveringID)
+                            containsSelected = true;
+                    }
+
+                    if (!containsSelected)
+                        CoveringsFlexboxAdapter.selectedCoveringID = -1;
+
+                    ProductInfoFragment.coveringsFlexboxAdapter.notifyDataSetChanged();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+
+                ProductInfoFragment.coveringsFlexboxAdapter.notifyDataSetChanged();
+            }
+        });
+
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonArrayRequest);
+    }
+
     static void GetColorsBySelectedCovering(final Context context) {
         ColorsFlexboxAdapter.colors.clear();
 
@@ -70,6 +126,8 @@ final class MarketAPI {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 error.printStackTrace();
+
+                ProductInfoFragment.colorsFlexboxAdapter.notifyDataSetChanged();
             }
         });
 

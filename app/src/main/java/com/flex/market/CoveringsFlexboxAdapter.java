@@ -32,8 +32,14 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
     @Override
     public void onBindViewHolder(@NonNull final CoveringViewHolder viewHolder, int i) {
         if (selectedCoveringID == coverings.get(i).ID) {
+            previousSelectedViewHolder = viewHolder;
+
             viewHolder.layout.setCardBackgroundColor(
                     Context.getResources().getColor(R.color.colorControlHighlight)
+            );
+        } else {
+            viewHolder.layout.setCardBackgroundColor(
+                    Context.getResources().getColor(android.R.color.white)
             );
         }
 
