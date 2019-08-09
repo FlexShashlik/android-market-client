@@ -15,10 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CatalogFragment extends Fragment {
-    ExpandableListView listViewCatalog;
-    static ExpandableListAdapter listAdapter;
-    static List<String> listCatalog;
-    static HashMap<String, List<String>> listHashMap;
+    private static ExpandableListAdapter listAdapter;
+    private static List<String> listCatalog;
+    private static HashMap<String, List<String>> listHashMap;
+    private ExpandableListView listViewCatalog;
 
     @Nullable
     @Override

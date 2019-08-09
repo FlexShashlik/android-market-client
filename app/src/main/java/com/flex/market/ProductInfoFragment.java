@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class ProductInfoFragment extends Fragment {
     static ColorsFlexboxAdapter colorsFlexboxAdapter;
     static CoveringsFlexboxAdapter coveringsFlexboxAdapter;
+    static TextView textViewProductPrice;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -39,7 +40,7 @@ public class ProductInfoFragment extends Fragment {
 
         ImageView imageViewProduct = view.findViewById(R.id.imageViewProduct);
         TextView textViewProductName = view.findViewById(R.id.textViewProductName);
-        TextView textViewProductPrice = view.findViewById(R.id.textViewProductPrice);
+        textViewProductPrice = view.findViewById(R.id.textViewProductPrice);
 
         GlideApp.with(view.getContext())
                 .load(

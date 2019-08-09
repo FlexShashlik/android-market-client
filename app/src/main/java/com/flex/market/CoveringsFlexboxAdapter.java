@@ -12,13 +12,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexboxAdapter.CoveringViewHolder> {
-    static ArrayList<Covering> coverings = new ArrayList<>();
+    static final ArrayList<Covering> coverings = new ArrayList<>();
     static int selectedCoveringID = -1;
     private static CoveringViewHolder previousSelectedViewHolder;
 
-    private Context Context;
+    private final Context Context;
 
-    public CoveringsFlexboxAdapter(Context context) {
+    CoveringsFlexboxAdapter(Context context) {
         Context = context;
     }
 
@@ -72,6 +72,15 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
 
                 selectedCoveringID = coverings.get(viewHolder.getAdapterPosition()).ID;
 
+                if (ColorsFlexboxAdapter.selectedColorID != -1) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            MarketAPI.GetCustomComboPrice(v.getContext());
+                        }
+                    }).start();
+                }
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -96,8 +105,8 @@ public class CoveringsFlexboxAdapter extends RecyclerView.Adapter<CoveringsFlexb
     }
 
     class CoveringViewHolder extends RecyclerView.ViewHolder {
-        CardView layout;
-        TextView name;
+        final CardView layout;
+        final TextView name;
 
         CoveringViewHolder(View itemView) {
             super(itemView);

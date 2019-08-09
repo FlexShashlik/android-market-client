@@ -13,10 +13,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdapter.ColorViewHolder> {
-    static ArrayList<Color> colors = new ArrayList<>();
+    static final ArrayList<Color> colors = new ArrayList<>();
     static int selectedColorID = -1;
     private ColorViewHolder previousSelectedViewHolder;
-    private Context Context;
+    private final Context Context;
 
     ColorsFlexboxAdapter(Context context) {
         Context = context;
@@ -71,7 +71,7 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
         return colors.size();
     }
 
-    private void clickEvent(final View v, ColorViewHolder viewHolder) {
+    private void clickEvent(final View v, final ColorViewHolder viewHolder) {
         if (previousSelectedViewHolder != null) {
             if (previousSelectedViewHolder == viewHolder) {
                 viewHolder.layout.setCardBackgroundColor(
@@ -98,6 +98,15 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
 
         selectedColorID = colors.get(viewHolder.getAdapterPosition()).ID;
 
+        if (CoveringsFlexboxAdapter.selectedCoveringID != -1) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    MarketAPI.GetCustomComboPrice(v.getContext());
+                }
+            }).start();
+        }
+
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -113,9 +122,9 @@ public class ColorsFlexboxAdapter extends RecyclerView.Adapter<ColorsFlexboxAdap
     }
 
     class ColorViewHolder extends RecyclerView.ViewHolder {
-        CardView layout;
-        TextView name;
-        ImageView image;
+        final CardView layout;
+        final TextView name;
+        final ImageView image;
 
         ColorViewHolder(View itemView) {
             super(itemView);

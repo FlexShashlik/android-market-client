@@ -13,10 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 class ProductsListAdapter extends ArrayAdapter {
-    private Context context;
-    private LayoutInflater inflater;
-
-    static List<Product> products = new ArrayList<>();
+    static final List<Product> products = new ArrayList<>();
+    private final Context context;
+    private final LayoutInflater inflater;
     static int selectedProductID = -1;
 
     ProductsListAdapter(Context context) {

@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 final class MarketAPI {
     static String token;
-    final static String SERVER = "http://192.168.43.55/";
+    final static String SERVER = "http://192.168.1.164/";
     private final static String API = "api/v1/";
 
     static int selectedSubCatalog = -1;
@@ -27,6 +27,41 @@ final class MarketAPI {
 
 // TODO: Helper class or method for requests
 
+    static void GetCustomComboPrice(final Context context) {
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(context);
+        String URL = SERVER + API +
+                "product/?product_id=" +
+                ProductsListAdapter.products.get(ProductsListAdapter.selectedProductID).ID +
+                "&color_id=" + ColorsFlexboxAdapter.selectedColorID +
+                "&covering_id=" + CoveringsFlexboxAdapter.selectedCoveringID;
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    ProductInfoFragment.textViewProductPrice.setText(
+                            response.getString("price")
+                    );
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error:  " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                error.printStackTrace();
+            }
+        });
+
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        queue.add(jsonObjectRequest);
+    }
     static void GetCoveringsBySelectedColors(final Context context) {
         CoveringsFlexboxAdapter.coverings.clear();
 

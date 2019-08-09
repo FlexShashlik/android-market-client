@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
-    private Context context;
-    private List<String> listCatalog;
-    private HashMap<String, List<String>> listHashMap;
+class ExpandableListAdapter extends BaseExpandableListAdapter {
+    static final List<Catalog> catalog = new ArrayList<>();
+    static final List<SubCatalog> subCatalog = new ArrayList<>();
+    private final Context context;
     static int selectedItemId = -1;
     static int lastExpandedPosition = -1;
-    static List<Catalog> catalog = new ArrayList<>();
-    static List<SubCatalog> subCatalog = new ArrayList<>();
+    private final List<String> listCatalog;
+    private final HashMap<String, List<String>> listHashMap;
 
     ExpandableListAdapter(Context context, List<String> listCatalog, HashMap<String, List<String>> listHashMap) {
         this.context = context;
