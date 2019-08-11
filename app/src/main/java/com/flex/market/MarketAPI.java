@@ -19,7 +19,7 @@ import org.json.JSONObject;
 
 final class MarketAPI {
     static String token;
-    final static String SERVER = "http://192.168.1.164/";
+    final static String SERVER = "{SERVER URL}";
     private final static String API = "api/v1/";
 
     static int selectedSubCatalog = -1;
